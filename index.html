@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silodosin 專業推廣平台</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap"
+        rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* CSS Reset & Variables */
+        :root {
+            --primary-navy: #0F2027;
+            --primary-teal: #203A43;
+            --accent-teal: #2C5364;
+            --highlight-blue: #00e5ff;
+            --success-green: #00e676;
+            --warning-red: #ff1744;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+            --bg-light: #f4f7f6;
+            --card-glass: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-navy);
+            color: var(--text-light);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
+
+        /* Mode Toggle Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 32, 39, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--highlight-blue);
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 5px;
+            border: 1px solid var(--card-border);
+        }
+
+        .toggle-btn {
+            padding: 12px 30px;
+            border: none;
+            background: transparent;
+            color: #aaa;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toggle-btn.active {
+            background: var(--highlight-blue);
+            color: var(--primary-navy);
+            box-shadow: 0 4px 15px rgba(0, 229, 255, 0.4);
+        }
+
+        /* Hero Section (Parallax) */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at center, var(--accent-teal) 0%, var(--primary-navy) 100%);
+            text-align: center;
+            padding: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(0, 230, 118, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            display: flex;
+            gap: 15px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(90deg, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
+        }
+
+        .hero-title span:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .hero-title span:nth-child(3) {
+            background: linear-gradient(90deg, #00e5ff, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation-delay: 0.6s;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #ccc;
+            max-width: 800px;
+            margin-bottom: 50px;
+            opacity: 0;
+            animation: fadeInUp 0.8s 1s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .quick-stats {
+            display: flex;
+            gap: 30px;
+            opacity: 0;
+            animation: fadeInUp 0.8s 1.2s forwards;
+        }
+
+        .stat-card {
+            background: var(--card-glass);
+            border: 1px solid var(--card-border);
+            padding: 25px 45px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 229, 255, 0.3);
+        }
+
+        .stat-card h3 {
+            font-size: 3rem;
+            color: var(--highlight-blue);
+            margin-bottom: 5px;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        }
+
+        .stat-card p {
+            font-size: 1.1rem;
+            color: #ddd;
+            font-weight: 500;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 120px 10%;
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 60px;
+            text-align: center;
+            background: linear-gradient(to right, #fff, #bbb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dynamic Content Toggle Logic */
+        .dynamic-content {
+            transition: opacity 0.5s ease;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .hide-uro .for-uro {
+            display: none !important;
+        }
+
+        .hide-gp .for-gp {
+            display: none !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: relative;
+        }
+
+        .highlight-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--highlight-blue), transparent);
+            border-top-left-radius: 24px;
+            border-bottom-left-radius: 24px;
+        }
+
+        /* Visualizations & Typography */
+        .chart-container {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .big-number {
+            font-size: 6rem;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .text-gradient {
+            background: linear-gradient(90deg, #00e5ff, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-red {
+            color: var(--warning-red);
+            text-shadow: 0 0 30px rgba(255, 23, 68, 0.4);
+        }
+
+        .text-green {
+            color: var(--success-green);
+            text-shadow: 0 0 30px rgba(0, 230, 118, 0.4);
+        }
+
+        ul.feature-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 30px;
+        }
+
+        ul.feature-list li {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            color: #ddd;
+        }
+
+        ul.feature-list li::before {
+            content: '✦';
+            color: var(--highlight-blue);
+            font-size: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 4rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .section {
+                padding: 80px 5%;
+            }
+
+            .navbar {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body class="hide-gp">
+
+    <!-- Global Dual-Track Navigation -->
+    <nav class="navbar">
+        <div class="logo">Silodosin PRO</div>
+        <div class="mode-toggle">
+            <button class="toggle-btn active" id="btn-uro" onclick="setMode('uro')">泌尿科專家 (Uro)</button>
+            <button class="toggle-btn" id="btn-gp" onclick="setMode('gp')">基層/家醫 (GP)</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="hero-title">
+            <span>Fast.</span> <span>Precise.</span> <span>Safe.</span>
+        </div>
+        <p class="for-uro dynamic-content">精準醫療的極限展現：162:1 標靶級受體選擇性，改寫 BPH 尿流動力學標準。</p>
+        <p class="for-gp dynamic-content">零心血管干擾防護網：最適合高齡、三高共病患者的安全解方。</p>
+
+        <div class="quick-stats">
+            <div class="stat-card">
+                <h3>2~6h</h3>
+                <p>有感起效時間</p>
+            </div>
+            <div class="stat-card">
+                <h3>60%</h3>
+                <p>首週夜尿改善率</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: Core Efficacy (Uro) / Safety Anchor (GP) -->
+    <section class="section" style="background: var(--primary-teal);">
+        <!-- Urologist Track -->
+        <div class="for-uro dynamic-content">
+            <div class="section-title">破頂的療效與標靶級精準</div>
+            <div class="grid-2">
+                <div class="glass-panel">
+                    <div class="highlight-accent"></div>
+                    <h3 style="font-size: 1.5rem; color: #aaa;">Alpha-1A / 1B 受體親和力比率</h3>
+                    <div class="chart-container">
+                        <canvas id="selectivityChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h2 style="font-size: 2.8rem; margin-bottom: 25px; line-height: 1.2;">極致選擇性 =<br><span
+                            class="text-gradient">只解阻塞，不干擾血壓</span></h2>
+                    <p style="font-size: 1.25rem; color: #ccc; margin-bottom: 20px; line-height: 1.8;">
+                        對比 Tamsulosin，Silodosin 將火力 100% 集中於解開下泌尿道平滑肌的枷鎖。
+                    </p>
+                    <ul class="feature-list">
+                        <li>排尿費力感 (Straining) <strong>強力降幅達 38.2%</strong>。</li>
+                        <li>膀胱出口阻塞指數 (BOOI) 從 70.6 斷崖式降至 39.2，<strong>達近乎手術等級的平滑肌放鬆</strong>。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- GP Track -->
+        <div class="for-gp dynamic-content">
+            <div class="section-title">建立信任：極致的安全防護網</div>
+            <div class="grid-2">
+                <div>
+                    <h2 style="font-size: 2.8rem; margin-bottom: 25px; line-height: 1.2;">別讓降壓副作用<br>成為<span
+                            class="text-red">致命傷</span></h2>
+                    <p style="font-size: 1.25rem; color: #ccc; margin-bottom: 30px; line-height: 1.8;">
+                        高齡病患多伴隨三高。開立傳統 α 阻斷劑，最怕引發姿態性低血壓導致摔倒與醫療糾紛。Silodosin 的超高選擇性，能完美避開與降血壓藥的危險協同作用。
+                    </p>
+                    <div class="glass-panel"
+                        style="padding: 25px; background: rgba(0, 230, 118, 0.05); border-color: rgba(0, 230, 118, 0.2);">
+                        <div
+                            style="font-size: 1.4rem; color: var(--success-green); font-weight: bold; margin-bottom: 10px;">
+                            ✓ Do No Harm 的承諾</div>
+                        <ul style="color: #ccc; font-size: 1.1rem; padding-left: 20px; line-height: 1.8;">
+                            <li>老人家免承擔跌倒風險（暈眩發生率與安慰劑相仿）。</li>
+                            <li>無 QTc 延長風險，處方最安心。</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="glass-panel" style="text-align: center;">
+                    <h3 style="font-size: 1.5rem; color: #aaa; margin-bottom: 40px;">血液動力學不良反應率</h3>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+                        <div style="text-align: center; opacity: 0.8;">
+                            <div class="big-number text-red" style="font-size: 4rem;">13.3%</div>
+                            <div style="color: #aaa; font-size: 1.2rem;">傳統同類藥物</div>
+                        </div>
+                        <div style="width: 2px; height: 100px; background: rgba(255,255,255,0.1);"></div>
+                        <div style="text-align: center;">
+                            <div class="big-number text-green"
+                                style="font-size: 7rem; text-shadow: 0 0 50px rgba(0,230,118,0.5);">2.4%</div>
+                            <div
+                                style="color: var(--success-green); font-weight: bold; font-size: 1.5rem; letter-spacing: 2px;">
+                                Silodosin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Cognitive Reframing - ALL Modes -->
+    <section class="section">
+        <div class="section-title">受體飽和的勝利標記 <span
+                style="display:block; font-size: 1.5rem; color: var(--highlight-blue); margin-top: 10px; font-weight: 400;">The
+                Efficacy Paradox</span></div>
+        <p
+            style="text-align: center; max-width: 900px; margin: 0 auto 60px auto; font-size: 1.4rem; color: #ddd; line-height: 1.8;">
+            翻轉副作用認知：<strong>逆行性射精 (RE) 並非臨床負擔。</strong><br>
+            它是藥物 100% 飽和結合 α1A 受體，展現強大平滑肌放鬆效力的「正向預測指標」。
+        </p>
+
+        <div class="grid-2">
+            <div class="glass-panel">
+                <div class="highlight-accent"></div>
+                <h3 style="font-size: 1.5rem; margin-bottom: 5px;">達成雙重卓越療效標準比例</h3>
+                <p style="color: #aaa; font-size: 1rem; margin-bottom: 20px;">(患者 IPSS 改善 ≥ 25% 且 Qmax 增加 ≥ 30%)</p>
+                <div class="chart-container">
+                    <canvas id="reChart"></canvas>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="glass-panel"
+                    style="background: rgba(0, 229, 255, 0.05); border-color: rgba(0, 229, 255, 0.3);">
+                    <h4
+                        style="font-size: 1.4rem; color: var(--highlight-blue); margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                        <span>💬</span> 消除摩擦力：診間溝通腳本
+                    </h4>
+                    <p style="font-size: 1.3rem; color: #fff; font-style: italic; line-height: 1.8;">
+                        「伯伯，如果您發現精液變少，不要擔心！這其實是恭喜您的訊號。這代表藥物在您的體內吸收得非常漂亮，攝護腺的肌肉已經完全放鬆了。精液只是暫時流回膀胱，對身體零傷害，停藥就會恢復。這就是為什麼您現在尿尿能立刻變得這麼順暢的原因！」
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Expansion (MET) -->
+    <section class="section" style="background: var(--primary-teal);">
+        <div class="section-title">高價值附加應用：輸尿管排石 (MET)</div>
+        <div class="grid-2">
+            <div>
+                <h2 style="font-size: 2.8rem; margin-bottom: 25px;">自帶光環的萬能武器</h2>
+                <p style="font-size: 1.25rem; color: #ccc; margin-bottom: 30px; line-height: 1.8;">
+                    除了 BPH，具備更強下泌尿道舒張能力的 Silodosin，在針對 <strong>小於 10mm 輸尿管結石</strong> 的藥物排石治療 (MET) 中，展現了壓倒性優勢。
+                </p>
+                <p style="font-size: 1.2rem; color: #aaa; border-left: 3px solid #666; padding-left: 15px;">
+                    無論是面對泌尿科的急診會診，還是基層診所的結石照護，這都是讓您處方更具威力的選擇。
+                </p>
+            </div>
+            <div class="glass-panel">
+                <div class="highlight-accent"></div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 40px;">單側遠端輸尿管結石排出率</h3>
+
+                <div style="margin-bottom: 35px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px;">
+                        <span style="font-size: 1.4rem; color: #bbb;">傳統 Tamsulosin</span>
+                        <span style="font-size: 2rem; color: #bbb; font-weight: bold;">61.5%</span>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.05); height: 12px; border-radius: 6px; overflow: hidden;">
+                        <div style="background: #666; width: 61.5%; height: 100%; transition: width 1s;"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 15px;">
+                        <span style="font-size: 1.6rem; color: #fff; font-weight: bold;">Silodosin</span>
+                        <span
+                            style="font-size: 3rem; color: var(--highlight-blue); font-weight: 900; line-height: 1;">82.4%</span>
+                    </div>
+                    <div
+                        style="background: rgba(255,255,255,0.05); height: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 0 20px rgba(0,229,255,0.3);">
+                        <div
+                            style="background: linear-gradient(90deg, #007bff, #00e5ff); width: 82.4%; height: 100%; transition: width 1s;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Academic Backing -->
+    <section class="section" style="background: var(--primary-navy);">
+        <div class="section-title">國際頂尖期刊 實證背書</div>
+        <p style="text-align: center; color: #aaa; margin-top: -40px; margin-bottom: 60px; font-size: 1.2rem;">
+            本指南臨床數據皆源自權威泌尿科醫學期刊</p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center;">
+            <div class="stat-card"
+                style="min-width: 280px; text-align: center; border: 1px solid rgba(0,229,255,0.5); background: rgba(0,229,255,0.05);">
+                <p
+                    style="color: #00e5ff; font-size: 1rem; margin-bottom: 15px; font-weight: bold; letter-spacing: 2px;">
+                    【泌尿學界最高殿堂】</p>
+                <h4 style="font-size: 1.6rem; margin-bottom: 20px; color: #fff; font-weight: 800;">European Urology</h4>
+                <div class="big-number text-gradient" style="font-size: 4rem;">IF 24.3</div>
+            </div>
+
+            <div class="stat-card" style="min-width: 250px; text-align: center;">
+                <p style="color: #aaa; font-size: 1rem; margin-bottom: 15px; letter-spacing: 1px;">美國泌尿醫學會官方</p>
+                <h4 style="font-size: 1.4rem; margin-bottom: 20px; color: #ddd;">Journal of Urology</h4>
+                <div class="big-number" style="font-size: 3rem; color: #fff;">IF 7.5</div>
+            </div>
+
+            <div class="stat-card" style="min-width: 250px; text-align: center;">
+                <p style="color: #aaa; font-size: 1rem; margin-bottom: 15px; letter-spacing: 1px;">歐洲腫瘤學子刊</p>
+                <h4 style="font-size: 1.4rem; margin-bottom: 20px; color: #ddd;">Eur Urol Oncology</h4>
+                <div class="big-number" style="font-size: 3rem; color: #fff;">IF 8.2</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px; text-align: center;">
+            <p style="color: #777; font-size: 1rem;">其他參考：European Urology Focus (IF 5.6+), DDDT (IF 5.1), BJU
+                International (IF 4.4+)</p>
+        </div>
+    </section>
+
+    <script>
+        // Global Mode Switcher
+        function setMode(mode) {
+            const body = document.body;
+            const btnUro = document.getElementById('btn-uro');
+            const btnGp = document.getElementById('btn-gp');
+
+            if (mode === 'uro') {
+                body.classList.remove('hide-uro');
+                body.classList.add('hide-gp');
+                btnUro.classList.add('active');
+                btnGp.classList.remove('active');
+            } else {
+                body.classList.remove('hide-gp');
+                body.classList.add('hide-uro');
+                btnGp.classList.add('active');
+                btnUro.classList.remove('active');
+            }
+
+            // Scroll to top smoothly on mode chage
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Initialize Charts with Premium Styling
+        Chart.defaults.color = '#ccc';
+        Chart.defaults.font.family = "'Inter', 'Noto Sans TC', sans-serif";
+        Chart.defaults.font.size = 14;
+
+        // Chart 1: Selectivity
+        const ctxSelectivity = document.getElementById('selectivityChart').getContext('2d');
+
+        // Gradient for Silodosin bar
+        let gradientSil = ctxSelectivity.createLinearGradient(0, 0, 0, 350);
+        gradientSil.addColorStop(0, 'rgba(0, 229, 255, 1)');
+        gradientSil.addColorStop(1, 'rgba(0, 123, 255, 0.5)');
+
+        new Chart(ctxSelectivity, {
+            type: 'bar',
+            data: {
+                labels: ['Tamsulosin', 'Alfuzosin', 'Silodosin'],
+                datasets: [{
+                    label: 'α1A vs α1B 親和力比率',
+                    data: [15, 0.3, 162],
+                    backgroundColor: [
+                        'rgba(255, 255, 255, 0.1)',
+                        'rgba(255, 255, 255, 0.1)',
+                        gradientSil
+                    ],
+                    borderColor: [
+                        'rgba(255, 255, 255, 0.3)',
+                        'rgba(255, 255, 255, 0.3)',
+                        'rgba(0, 229, 255, 1)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 15, titleFont: { size: 16 }, bodyFont: { size: 16 } }
+                },
+                scales: {
+                    y: {
+                        type: 'logarithmic',
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { color: '#888' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#ddd', font: { weight: 'bold' } }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Efficacy Paradox (RE vs No RE)
+        const ctxRE = document.getElementById('reChart').getContext('2d');
+
+        // Gradient for RE bar
+        let gradientRE = ctxRE.createLinearGradient(0, 0, 0, 350);
+        gradientRE.addColorStop(0, 'rgba(0, 229, 255, 1)');
+        gradientRE.addColorStop(1, 'rgba(0, 123, 255, 0.4)');
+
+        new Chart(ctxRE, {
+            type: 'bar',
+            data: {
+                labels: ['未發生射精變化 (No RE)', '發生射精變化 (RE)'],
+                datasets: [{
+                    label: '達成雙重療效標準比例 (%)',
+                    data: [23.0, 34.4],
+                    backgroundColor: [
+                        'rgba(255, 255, 255, 0.15)',
+                        gradientRE
+                    ],
+                    borderColor: [
+                        'transparent',
+                        'rgba(0, 229, 255, 1)'
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 12
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { backgroundColor: 'rgba(0,0,0,0.8)', padding: 15, bodyFont: { size: 18, weight: 'bold' } }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 45,
+                        grid: { color: 'rgba(255,255,255,0.05)' },
+                        ticks: { callback: function (value) { return value + '%' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { size: 14, weight: 'bold' } }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
