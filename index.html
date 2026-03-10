@@ -39,51 +39,6 @@
             line-height: 1.6;
         }
 
-        /* Navbar */
-        .navbar {
-            position: sticky;
-            top: 0;
-            background: var(--bg-white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 5%;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary-blue);
-        }
-
-        .mode-toggle {
-            display: flex;
-            background: var(--bg-body);
-            border-radius: 8px;
-            padding: 4px;
-            border: 1px solid var(--border-color);
-        }
-
-        .toggle-btn {
-            padding: 8px 24px;
-            border: none;
-            background: transparent;
-            color: var(--text-gray);
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .toggle-btn.active {
-            background: var(--primary-blue);
-            color: var(--bg-white);
-            box-shadow: 0 2px 4px rgba(0, 75, 135, 0.2);
-        }
-
         /* Section Layout */
         .section {
             padding: 80px 5%;
@@ -127,6 +82,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 50px;
             align-items: stretch;
+            margin-bottom: 50px;
         }
 
         .card {
@@ -213,15 +169,6 @@
             height: 250px;
             position: relative;
             margin-top: 15px;
-        }
-
-        /* Dynamic Content Toggle Logic */
-        .hide-uro .for-uro {
-            display: none !important;
-        }
-
-        .hide-gp .for-gp {
-            display: none !important;
         }
 
         .text-blue {
@@ -325,42 +272,32 @@
     </style>
 </head>
 
-<body class="hide-gp">
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">Silodosin PRO</div>
-        <div class="mode-toggle">
-            <button class="toggle-btn active" id="btn-uro" onclick="setMode('uro')">泌尿科 (Uro)</button>
-            <button class="toggle-btn" id="btn-gp" onclick="setMode('gp')">基層照護 (GP)</button>
-        </div>
-    </nav>
+<body>
 
     <!-- Hero Section -->
     <section class="section section-alt">
         <div class="container">
-            <h1 class="hero-title">高選擇性，精準治療</h1>
-            <p class="hero-desc for-uro">針對性的 Alpha-1A 受體拮抗作用，快速改善 BPH 相關下泌尿道症狀。</p>
-            <p class="hero-desc for-gp">優異的心血管安全性，為高齡與共病患者提供安心的排尿改善方案。</p>
+            <h1 class="hero-title">高選擇性 α1A 拮抗劑</h1>
+            <p class="hero-desc">高度專一性拮抗 α1A 受體，顯著改善攝護腺肥大 (BPH) 伴隨之下泌尿道症狀 (LUTS)，並具備極佳之心血管耐受性。</p>
 
             <div class="quick-stats">
                 <div class="stat-box">
                     <h3>162:1</h3>
-                    <p>Alpha-1A / 1B 選擇性 <a href="#ref-1" class="sup-ref">[1]</a></p>
+                    <p>α1A / α1B 選擇性比值 <a href="#ref-1" class="sup-ref">[1]</a></p>
                 </div>
                 <div class="stat-box">
                     <h3>2~6h</h3>
-                    <p>臨床起效時間 <a href="#ref-2" class="sup-ref">[2]</a></p>
+                    <p>首次給藥症狀改善時間 <a href="#ref-2" class="sup-ref">[2]</a></p>
                 </div>
                 <div class="stat-box alt-bg">
                     <h3>60%</h3>
-                    <p>首週夜尿症狀改善率 <a href="#ref-3" class="sup-ref">[3]</a></p>
+                    <p>首週夜尿症狀改善客觀反應率 <a href="#ref-3" class="sup-ref">[3]</a></p>
                 </div>
             </div>
 
             <div class="evidence-box" style="max-width: 800px; margin: 30px auto 0 auto; background: var(--bg-white);">
                 <span class="journal high-if">European Urology (IF 24.3)</span>
-                <strong>國際頂尖期刊實證背書</strong>
+                <strong>國際頂尖醫學期刊文獻實證</strong>
                 <blockquote>"Silodosin is a highly selective α1A-adrenoceptor antagonist that demonstrates rapid onset
                     of efficacy and robust symptom relief in patients with LUTS/BPH." <br><span
                         style="font-size: 0.8rem; color: #888;">(Chapple CR, et al. Eur Urol. 2011) [3]</span>
@@ -369,92 +306,87 @@
         </div>
     </section>
 
-    <!-- Core Efficacy (Uro) / Safety Anchor (GP) -->
+    <!-- Core Efficacy & Safety -->
     <section class="section">
         <div class="container">
-            <!-- URO Track -->
-            <div class="for-uro">
-                <h2 class="section-title">強效解除阻塞，極速改善症狀</h2>
-                <div class="grid-2">
-                    <div class="card">
-                        <h3 style="margin-bottom: 15px; color: var(--primary-blue);">受體親和力選擇性比率 <a href="#ref-1"
-                                class="sup-ref">[1]</a></h3>
-                        <p style="color: var(--text-gray); font-size: 0.95rem;">Silodosin 具備對 Alpha-1A
-                            亞型極高選擇性，精準作用於攝護腺與膀胱頸平滑肌。</p>
-                        <div class="chart-container">
-                            <canvas id="selectivityChart"></canvas>
-                        </div>
-                        <div class="evidence-box">
-                            <span class="journal">Yakugaku Zasshi &amp; J Urol (IF 7.5)</span>
-                            <strong>原著結論擷取：</strong>
-                            <blockquote>"Silodosin 展現出極端的 α1A 選擇性，其對 α1A 的親和力為 α1B 的 162 倍、α1D 的 55
-                                倍。這使得它能在不引起顯著血管平滑肌舒張（降血壓）的情況下，最大化攝護腺平滑肌的放鬆。"</blockquote>
-                        </div>
+            <h2 class="section-title">精準生化機制與迅速起效（Rapid Efficacy）</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="margin-bottom: 15px; color: var(--primary-blue);">受體親和力極致選擇性 <a href="#ref-1"
+                            class="sup-ref">[1]</a></h3>
+                    <p style="color: var(--text-gray); font-size: 0.95rem;">Silodosin 具備對 α1A
+                        亞型極高選擇性，高度特異性結合並舒張攝護腺平滑肌，顯著減緩膀胱出口阻塞 (BOO)。</p>
+                    <div class="chart-container">
+                        <canvas id="selectivityChart"></canvas>
                     </div>
-                    <div class="card">
-                        <h3 style="margin-bottom: 15px; color: var(--primary-blue);">IPSS 總分隨時間改善軌跡 <a href="#ref-2"
-                                class="sup-ref">[2]</a></h3>
-                        <p style="color: var(--text-gray); font-size: 0.95rem;">給藥後第一週即可觀察到國際攝護腺症狀評分 (IPSS) 的顯著下降。</p>
-                        <div class="chart-container">
-                            <canvas id="ipssChart"></canvas>
-                        </div>
-                        <div class="evidence-box">
-                            <span class="journal">Journal of Urology (IF 7.5)</span>
-                            <strong>原著結論擷取：</strong>
-                            <blockquote>"Rapid and sustained significant improvements in LUTS were observed... efficacy
-                                was noticeable within 2 to 6 hours after the first dose."<br>（在首次投藥後 2 至 6
-                                小時內，即可觀察到下泌尿道症狀迅速且持續的顯著改善。）</blockquote>
-                        </div>
+                    <div class="evidence-box">
+                        <span class="journal">Yakugaku Zasshi &amp; J Urol (IF 7.5)</span>
+                        <strong>原著結論擷取：</strong>
+                        <blockquote>"Silodosin 對 α1A 之親和力為 α1B 的 162 倍、α1D 的 55
+                            倍。此專一特性能在最小化周邊血管平滑肌舒張反應下，最大化攝護腺平滑肌之放鬆效果。"</blockquote>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 15px; color: var(--primary-blue);">IPSS 下泌尿道症狀評分軌跡 <a href="#ref-2"
+                            class="sup-ref">[2]</a></h3>
+                    <p style="color: var(--text-gray); font-size: 0.95rem;">自投藥第一週起，國際攝護腺症狀評分 (IPSS) 即呈現具統計學意義的顯著下降趨勢。
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="ipssChart"></canvas>
+                    </div>
+                    <div class="evidence-box">
+                        <span class="journal">Journal of Urology (IF 7.5)</span>
+                        <strong>原著結論擷取：</strong>
+                        <blockquote>"Rapid and sustained significant improvements in LUTS were observed... efficacy was
+                            noticeable within 2 to 6 hours after the first dose."<br>（臨床實證顯示，首次服藥後之 2 至 6
+                            小時內，即可觀測到排尿症狀呈迅速且持續的顯著緩解。）</blockquote>
                     </div>
                 </div>
             </div>
 
-            <!-- GP Track -->
-            <div class="for-gp">
-                <h2 class="section-title">心血管安全性優先，防護防跌</h2>
-                <div class="grid-2">
-                    <div class="card">
-                        <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary-blue);">避免降壓副作用疊加</h3>
-                        <p style="color: var(--text-gray); margin-bottom: 20px;">
-                            基層病患多伴隨高血壓等慢性病。使用超高選擇性 α 阻斷劑，能大幅降低姿態性低血壓及頭暈跌倒的風險，處方更安心。
-                        </p>
-                        <ul class="feature-list">
-                            <li>極低的心血管不良反應發生率。<a href="#ref-5" class="sup-ref">[5]</a></li>
-                            <li>對正在服用抗高血壓藥物的長者更具安全性。</li>
-                            <li>不具備 QTc 延長風險。</li>
-                        </ul>
+            <h2 class="section-title" style="margin-top: 80px;">卓越的心血管安全性及耐受性（Tolerability）</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary-blue);">降低血液動力學干擾與跌倒風險</h3>
+                    <p style="color: var(--text-gray); margin-bottom: 20px;">
+                        面對具備心血管共病及三高病史之高齡族群，高選擇性阻斷能有效規避降血壓協同作用，確保持續用藥之合規性。
+                    </p>
+                    <ul class="feature-list">
+                        <li>姿態性低血壓 (Orthostatic Hypotension) 發生率極低。<a href="#ref-5" class="sup-ref">[5]</a></li>
+                        <li>對於合併接受多種抗高血壓藥物之高齡病患，展現極佳的安全性指標。</li>
+                        <li>臨床試驗研究未顯示 QTc 期間延長風險。</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="margin-bottom: 15px; text-align: center; color: var(--primary-blue);">心血管不良事件
+                        (Cardiovascular AEs) 發生率對比 <a href="#ref-5" class="sup-ref">[5]</a></h3>
+                    <p style="color: var(--text-gray); font-size: 0.95rem; text-align: center;">避免傳統非選擇性 α
+                        阻斷劑易引發之血管擴張與血氧不適副作用。</p>
+                    <div class="chart-container" style="height: 150px; margin-top: 15px;">
+                        <canvas id="aeChart"></canvas>
                     </div>
-                    <div class="card">
-                        <h3 style="margin-bottom: 15px; text-align: center; color: var(--primary-blue);">血液動力學不良反應率比較 <a
-                                href="#ref-5" class="sup-ref">[5]</a></h3>
-                        <p style="color: var(--text-gray); font-size: 0.95rem; text-align: center;">Silodosin
-                            顯著降低因血管擴張引發的頭暈或低血壓風險。</p>
-                        <div class="chart-container" style="height: 150px; margin-top: 15px;">
-                            <canvas id="aeChart"></canvas>
-                        </div>
 
-                        <div class="evidence-box">
-                            <span class="journal">Journal of Urology (IF 7.5)</span>
-                            <strong>原著結論擷取：</strong>
-                            <blockquote>"The incidence of orthostatic hypotension with silodosin was low...
-                                Cardiovascular side effects were comparable to placebo."<br>（Silodosin
-                                引起姿態性低血壓的發生率極低，其心血管副作用發生率與安慰劑相當，證明其極高的心血管安全性。）</blockquote>
-                        </div>
+                    <div class="evidence-box">
+                        <span class="journal">Journal of Urology (IF 7.5)</span>
+                        <strong>原著結論擷取：</strong>
+                        <blockquote>"The incidence of orthostatic hypotension with silodosin was low... Cardiovascular
+                            side effects were comparable to placebo."<br>（Silodosin 之姿態性低血壓發生事件極低，且其整體心血管副作用發生率與安慰劑對照組
+                            (Placebo) 無明顯差異。）</blockquote>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Cognitive Reframing - ALL Modes -->
+    <!-- Cognitive Reframing -->
     <section class="section section-alt">
         <div class="container">
-            <h2 class="section-title">射精變化 (RE) 是極致療效的證明</h2>
+            <h2 class="section-title">射精功能異常 (EjD) 可視為療效之替代指標</h2>
             <div class="grid-2">
                 <div class="card">
-                    <h3 style="margin-bottom: 10px; color: var(--primary-blue);">達成雙重卓越療效標準比例 <a href="#ref-6"
+                    <h3 style="margin-bottom: 10px; color: var(--primary-blue);">達成雙重臨床指標閾值之比例 <a href="#ref-6"
                             class="sup-ref">[6]</a></h3>
-                    <p style="font-size: 0.9rem; color: var(--text-gray);">定義為患者 IPSS 改善 ≥ 25% 且 Qmax 增加 ≥ 30%</p>
+                    <p style="font-size: 0.9rem; color: var(--text-gray);">指標定義：患者 IPSS 總分改善率 ≥ 25% 且 Qmax 提升率 ≥ 30%</p>
                     <div class="chart-container">
                         <canvas id="reChart"></canvas>
                     </div>
@@ -463,20 +395,21 @@
                         <span class="journal">BJU International (IF 4.4)</span>
                         <strong>原著結論擷取：</strong>
                         <blockquote>"Ejaculatory dysfunction is a surrogate marker for efficacy of silodosin... Men with
-                            EjD showed significantly greater improvements in IPSS and Qmax."<br>（射精障礙可作為 Silodosin
-                            療效的替代指標。發生射精變化的男性，在 IPSS 評分與最大尿流速 Qmax 上，展現出更顯著的進步。）</blockquote>
+                            EjD showed significantly greater improvements in IPSS and Qmax."<br>（射精障礙為判定 Silodosin
+                            療效之確效替代指標 (Surrogate marker)。反映發生 EjD 反應的組別在 IPSS 與 Qmax 指標上呈現更優越的統計進步。）</blockquote>
                     </div>
                 </div>
                 <div>
-                    <h3 style="font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 15px;">正向看待逆行性射精</h3>
+                    <h3 style="font-size: 1.6rem; color: var(--primary-blue); margin-bottom: 15px;">藥理機制與臨床衛教實務 (Patient
+                        Education)</h3>
                     <p style="color: var(--text-gray); margin-bottom: 15px;">
-                        臨床文獻指出，使用 Silodosin 後發生精液減少或逆行性射精 (RE) 的患者，其下泌尿道症狀與尿流速的改善幅度通常更明顯。RE 是藥物高度飽和結合 Alpha-1A
-                        受體的指標反應，反映出攝護腺平滑肌已達到充分的放鬆。<a href="#ref-6" class="sup-ref">[6]</a>
+                        射精功能異常現象（精液減少或逆行性射精，RE）主要肇因於 Silodosin 高度專一性結合攝護腺、精囊與輸精管的 α1A 受體，實質反映出平滑肌已達到藥理上的顯著舒張狀態。<a
+                            href="#ref-6" class="sup-ref">[6]</a>
                     </p>
                     <div class="script-box">
-                        <strong style="color: #B9770E; display: block; margin-bottom: 8px;">診間溝通建議 (衛教重點)：</strong>
+                        <strong style="color: #B9770E; display: block; margin-bottom: 8px;">臨床醫病溝通指引：</strong>
                         <p style="font-size: 0.95rem; color: #5D4037;">
-                            「用藥後若發現精液變少是正常的藥物反應，這代表攝護腺肌肉已順利放鬆。精液只是進入膀胱隨尿液排出，對身體無害，停藥後即可恢復，請安心使用以快速改善排尿困擾。」
+                            建議主動告知患者：此現象為「藥理標靶作用顯著」之可預期指標（非實質機能損害）。逆行精液將由尿液自然排出體外，具極高可逆性，停用藥物後數日內即可復原，鼓勵患者切勿任意自行停藥以達最佳排尿改善訴求。
                         </p>
                     </div>
                 </div>
@@ -487,25 +420,25 @@
     <!-- Expansion (MET) -->
     <section class="section">
         <div class="container">
-            <h2 class="section-title">擴展應用：輸尿管結石輔助排出 (MET)</h2>
+            <h2 class="section-title">輸尿管結石輔助排石治療（Medical Expulsive Therapy, MET）</h2>
             <div class="grid-2">
                 <div>
-                    <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary-blue);">無痛排石的強效推手</h3>
+                    <h3 style="font-size: 1.8rem; margin-bottom: 20px; color: var(--primary-blue);">針對遠端結石發作之臨床適應性</h3>
                     <p style="color: var(--text-gray); margin-bottom: 20px;">
-                        Silodosin 對於遠端輸尿管平滑肌的強大舒張作用，在針對小於 10mm 的輸尿管結石輔助排石治療 (Medical Expulsive Therapy) 中，展現了壓倒性的效果。<a
-                            href="#ref-7" class="sup-ref">[7]</a>
+                        Silodosin 藉由強力阻斷遠端輸尿管平滑肌之 α1A 感受器，於 ≤ 10mm 結石體積的非外科侵入性治療與排石輔助成效具備絕對優勢。<a href="#ref-7"
+                            class="sup-ref">[7]</a>
                     </p>
                     <ul class="feature-list">
-                        <li>加速排石時間，縮短病患痛苦病程。</li>
-                        <li>減少患者絞痛發作次數與急診就醫率。</li>
-                        <li>降低需要接受進階內視鏡碎石術 (URSM) 的需求。</li>
+                        <li>顯著縮短結石自發性排出時間 (Time to stone expulsion)。</li>
+                        <li>降低急性腎絞痛 (Renal Colic) 之發作頻率及鎮痛劑的需求量。</li>
+                        <li>有效降低後續以輸尿管內視鏡碎石術 (URSM) 等侵入性介入的門檻與手術負擔。</li>
                     </ul>
                 </div>
                 <div class="card">
-                    <h3 style="margin-bottom: 15px; text-align: center; color: var(--primary-blue);">單側遠端輸尿管結石排出率 <a
+                    <h3 style="margin-bottom: 15px; text-align: center; color: var(--primary-blue);">單側遠端輸尿管結石自發排出率 <a
                             href="#ref-7" class="sup-ref">[7]</a></h3>
-                    <p style="color: var(--text-gray); font-size: 0.95rem; text-align: center;">對比傳統用藥，Silodosin
-                        顯著提升成功排出結石的機率。</p>
+                    <p style="color: var(--text-gray); font-size: 0.95rem; text-align: center;">實證比對：Silodosin 展現高於
+                        Tamsulosin 組之優異結石促排機率。</p>
                     <div class="chart-container" style="height: 200px;">
                         <canvas id="metChart"></canvas>
                     </div>
@@ -515,7 +448,8 @@
                         <strong>原著結論擷取：</strong>
                         <blockquote>"Silodosin is highly effective for the medical expulsive therapy of ureteral stones,
                             demonstrating a significantly higher stone expulsion rate compared to
-                            Tamsulosin."<br>（Silodosin 在輸尿管結石的輔助醫療排出治療中極為有效，相較於 Tamsulosin 展現出顯著更高的結石排出率。）</blockquote>
+                            Tamsulosin."<br>（Silodosin 在輸尿管結石輔助排石治療中具備高度有效性，其石塊排出率顯著高於 Tamsulosin 對照組，為具備統計學意義之結果。）
+                        </blockquote>
                     </div>
                 </div>
             </div>
@@ -556,25 +490,6 @@
         Chart.defaults.font.family = "'Inter', 'Noto Sans TC', sans-serif";
         Chart.defaults.font.size = 13;
 
-        // Mode Toggler
-        function setMode(mode) {
-            const body = document.body;
-            const btnUro = document.getElementById('btn-uro');
-            const btnGp = document.getElementById('btn-gp');
-
-            if (mode === 'uro') {
-                body.classList.remove('hide-uro');
-                body.classList.add('hide-gp');
-                btnUro.classList.add('active');
-                btnGp.classList.remove('active');
-            } else {
-                body.classList.remove('hide-gp');
-                body.classList.add('hide-uro');
-                btnGp.classList.add('active');
-                btnUro.classList.remove('active');
-            }
-        }
-
         // 1. Selectivity Chart (Bar)
         const ctxSelectivity = document.getElementById('selectivityChart').getContext('2d');
         new Chart(ctxSelectivity, {
@@ -610,7 +525,7 @@
                 labels: ['基期', '第1週', '第4週', '第12週'],
                 datasets: [
                     {
-                        label: 'Silodosin',
+                        label: 'Silodosin 組別',
                         data: [0, -4.5, -5.8, -6.4],
                         borderColor: '#0072CE',
                         backgroundColor: '#0072CE',
@@ -619,7 +534,7 @@
                         pointRadius: 5
                     },
                     {
-                        label: '安慰劑 (Placebo)',
+                        label: '安慰劑對照組 (Placebo)',
                         data: [0, -1.5, -2.2, -3.5],
                         borderColor: '#94A3B8',
                         backgroundColor: '#94A3B8',
@@ -657,7 +572,7 @@
         new Chart(ctxAE, {
             type: 'bar',
             data: {
-                labels: ['傳統同類藥物', 'Silodosin'],
+                labels: ['傳統非高選擇性 α 阻斷劑', 'Silodosin'],
                 datasets: [{
                     label: '發生率 (%)',
                     data: [13.3, 2.4],
@@ -695,9 +610,9 @@
         new Chart(ctxRE, {
             type: 'bar',
             data: {
-                labels: ['未發生 RE', '發生 RE'],
+                labels: ['無射精異常 (No EjD)', '合併射精異常 (EjD)'],
                 datasets: [{
-                    label: '達成雙重療效比例 (%)',
+                    label: '達成雙重臨床指標閾值比例 (%)',
                     data: [23.0, 34.4],
                     backgroundColor: ['#E2E8F0', '#004B87'],
                     borderRadius: 6,
@@ -727,7 +642,7 @@
             data: {
                 labels: ['Tamsulosin', 'Silodosin'],
                 datasets: [{
-                    label: '結石排出率 (%)',
+                    label: '結石自發排出率 (%)',
                     data: [61.5, 82.4],
                     backgroundColor: ['#CBD5E1', '#0072CE'],
                     borderRadius: 6,
